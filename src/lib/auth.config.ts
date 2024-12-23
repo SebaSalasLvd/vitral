@@ -7,7 +7,7 @@ export const auth = betterAuth({
         host: import.meta.env.POSTGRES_HOST,
         user: import.meta.env.POSTGRES_USER,
         password: import.meta.env.POSTGRES_PASSWORD,
-        database: "vidral"
+        database: import.meta.env.POSTGRES_DATABASE
     }),
      socialProviders:{
         github: {
