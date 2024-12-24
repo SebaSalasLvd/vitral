@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { AppleIcon, GithubIcon, GoogleIcon } from './LoginFormIcon';
+
 
 export const LoginForm = ({ hidden }) => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,10 @@ export const LoginForm = ({ hidden }) => {
 
     if (!formData.password) {
       errors.password = 'You must enter a password';
+    } else if (formData.password.length < 8) {
+      errors.password = 'Password must be at least 8 characters';
+    } else if (formData.password.length > 20) {
+      errors.password = 'Password must be at most 20 characters';
     }
 
     setErrors(errors);
@@ -36,20 +42,20 @@ export const LoginForm = ({ hidden }) => {
       setTimeout(() => {
         console.log('Login Successful');
         setIsSubmitting(false);
-      }, 1000);
+      }, 100);
     } else {
       console.log('Validation errors:', errors);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`flex flex-col items-center w-full h-full ${hidden ? 'hidden' : ''}`}>
-      <div className="w-[80%] flex flex-col gap-2 mb-5">
+    <form onSubmit={handleSubmit} className={`flex flex-col w-full h-auto ml-10 ${hidden ? 'hidden' : ''}`}>
+      <div className="w-[80%] flex flex-col gap-2 mb-5 mt-10">
         <h1 className="text-3xl font-semibold">Iniciar sesion</h1>
       </div>
       <div className="w-[80%] min-h-[70%] flex flex-col gap-4">
         <div className="flex flex-col">
-          <label htmlFor="email" className="text-sm font-semibold">Email</label>
+          <label htmlFor="email" className="text-lg font-semibold">Introduce un correo electronico</label>
           <input
             type="text"
             id="email"
@@ -57,13 +63,13 @@ export const LoginForm = ({ hidden }) => {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             className="mt-2 p-3 border border-gray-300 rounded-md"
-            placeholder="john_doe@gmail.com"
+            placeholder="Correo electronico"
           />
           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="password" className="text-sm font-semibold">Contraseña</label>
+          <label htmlFor="password" className="text-lg font-semibold">Introduce una contraseña</label>
           <input
             type="password"
             id="password"
@@ -71,7 +77,7 @@ export const LoginForm = ({ hidden }) => {
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             className="mt-2 p-3 border border-gray-300 rounded-md"
-            placeholder="$up3r_Secr3t_P4ssw0rd!"
+            placeholder="Contraseña"
           />
           {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
         </div>
@@ -83,8 +89,21 @@ export const LoginForm = ({ hidden }) => {
           className={`w-full p-3 mt-4 text-white bg-blue-900 rounded-md ${isSubmitting ? 'opacity-50' : ''}`}
         >
           {isSubmitting ? 'Iniciando sesion...' : 'Iniciar sesion'}
-        </button>
-        <p className="mt-4 text-sm">
+        </button>   
+      </div>
+      <div>
+        <p className='mt-3 mb-3 text-sm'>
+          Iniciar sesion con
+        </p>
+        <div className='flex flex-row gap-2'>
+          <AppleIcon />
+          <GoogleIcon/>
+          <GithubIcon/>
+
+        </div>
+      </div>
+      <div className='items-center flex'>
+        <p className="mt-3 text-sm item">
           Aun no tienes una cuenta? <a href="/register" className="text-blue-600">Registrate!</a>
         </p>
       </div>
