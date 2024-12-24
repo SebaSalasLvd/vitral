@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AppleIcon, GithubIcon, GoogleIcon } from './LoginFormIcon';
 
 
-export const LoginForm = ({ hidden }) => {
+export const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -49,8 +49,8 @@ export const LoginForm = ({ hidden }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`flex flex-col w-full h-auto ml-10 ${hidden ? 'hidden' : ''}`}>
-      <div className="w-[80%] flex flex-col gap-2 mb-5 mt-10">
+    <form onSubmit={handleSubmit} className={`flex flex-col w-full overflow-y-auto p-2`}>
+      <div className="w-[80%] flex flex-col gap-2 mb-5">
         <h1 className="text-3xl font-semibold">Iniciar sesion</h1>
       </div>
       <div className="w-[80%] min-h-[70%] flex flex-col gap-4">
@@ -99,7 +99,6 @@ export const LoginForm = ({ hidden }) => {
           <AppleIcon />
           <GoogleIcon/>
           <GithubIcon/>
-
         </div>
       </div>
       <div className='items-center flex'>
