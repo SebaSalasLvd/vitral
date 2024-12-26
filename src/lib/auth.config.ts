@@ -9,6 +9,9 @@ export const auth = betterAuth({
         password: import.meta.env.POSTGRES_PASSWORD,
         database: import.meta.env.POSTGRES_DATABASE
     }),
+    emailAndPassword: {
+        enabled: true
+    },
      socialProviders:{
         github: {
             clientId: import.meta.env.GITHUB_CLIENT_ID as string,
