@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AppleIcon, GithubIcon, GoogleIcon } from '../../components/login/LoginFormIcon';
+import { AppleIcon, GithubIcon, GoogleIcon } from './LoginFormIcon';
 import { signIn } from '../../lib/auth.clients';
 
 interface FormData {
