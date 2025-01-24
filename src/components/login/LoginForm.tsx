@@ -1,18 +1,25 @@
 import { useState } from 'react';
 import { AppleIcon, GithubIcon, GoogleIcon } from './LoginFormIcon';
+import { signIn } from '../../lib/auth.clients';
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
+interface Errors {
+  email?: string;
+  password?: string;
+}
 
 export const LoginForm = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
+  const [errors, setErrors] = useState<Errors>({});
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const validate = () => {
-    const errors = {};
-    const regex = /^[a-zA-Z0-9._%+-]+@/;
+  const validate = (): Errors => {
+    const errors: Errors = {}; 
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (!formData.email) {
       errors.email = 'You must enter your email address';
@@ -32,30 +39,37 @@ export const LoginForm = () => {
     return errors;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-    const errors = validate();
-    if (Object.keys(errors).length === 0) {
-      setIsSubmitting(true);
-      console.log('Submitting form with data:', formData);
-      setTimeout(() => {
-        console.log('Login Successful');
-        setIsSubmitting(false);
-      }, 100);
-    } else {
-      console.log('Validation errors:', errors);
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) return;
+    setIsSubmitting(true);
+    try {
+      // Falta el signin con el formulario
+      console.log('Formulario enviado:', formData);
+    } catch (err) {
+      console.log("Error al iniciar sesión con email y contraseña:", err);
+    }
+  };
+
+  const handleGitHubLogin = async () => {
+    try {
+      await signIn.social({ provider: 'github' })
+      console.log('Formulario enviado:', formData);
+    } catch (err) {
+      console.log("Error al iniciar sesión con GitHub:", err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`flex flex-col w-full overflow-y-auto p-2`}>
+    <form onSubmit={handleSubmit} className="flex flex-col w-full overflow-y-auto p-2">
       <div className="w-[80%] flex flex-col gap-2 mb-5">
-        <h1 className="text-3xl font-semibold">Iniciar sesion</h1>
+        <h1 className="text-3xl font-semibold">Iniciar sesión</h1>
       </div>
       <div className="w-[80%] min-h-[70%] flex flex-col gap-4">
         <div className="flex flex-col">
-          <label htmlFor="email" className="text-lg font-semibold">Introduce un correo electronico</label>
+          <label htmlFor="email" className="text-lg font-semibold">Introduce un correo electrónico</label>
           <input
             type="text"
             id="email"
@@ -63,7 +77,7 @@ export const LoginForm = () => {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             className="mt-2 p-3 border border-gray-300 rounded-md"
-            placeholder="Correo electronico"
+            placeholder="Correo electrónico"
           />
           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
         </div>
@@ -88,22 +102,30 @@ export const LoginForm = () => {
           disabled={isSubmitting}
           className={`w-full p-3 mt-4 text-white bg-blue-900 rounded-md ${isSubmitting ? 'opacity-50' : ''}`}
         >
-          {isSubmitting ? 'Iniciando sesion...' : 'Iniciar sesion'}
-        </button>   
+          {isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
+        </button>
       </div>
       <div>
         <p className='mt-3 mb-3 text-sm'>
-          Iniciar sesion con
+          Iniciar sesión con
         </p>
         <div className='flex flex-row gap-2'>
-          <AppleIcon />
-          <GoogleIcon/>
-          <GithubIcon/>
+          <button>
+            <AppleIcon />
+          </button>
+          <button>
+            <GoogleIcon />
+          </button>
+          <button
+            type='button'
+            onClick={handleGitHubLogin}>
+            <GithubIcon />
+          </button>
         </div>
       </div>
       <div className='items-center flex'>
         <p className="mt-3 text-sm item">
-          Aun no tienes una cuenta? <a href="/register" className="text-blue-600">Registrate!</a>
+          Aún no tienes una cuenta? <a href="/register" className="text-blue-600">¡Regístrate!</a>
         </p>
       </div>
     </form>
