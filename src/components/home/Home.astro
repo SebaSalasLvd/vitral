@@ -1,0 +1,20 @@
+---
+
+import { useState } from 'react';
+import Modal from './Modal.astro'; 
+
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+const openModal = () => setIsModalOpen(true);
+const closeModal = () => setIsModalOpen(false);
+---
+
+<button class="bg-blue-500 text-white p-2 rounded" onClick={openModal}>
+  Abrir Modal
+</button>
+
+{isModalOpen && (
+  <Modal open={isModalOpen} onClose={closeModal}>
+    <h2 class="text-2xl font-semibold mb-4">Este es el contenido del Modal</h2>
+  </Modal>
+)}
